@@ -8,6 +8,14 @@
 
 import UIKit
 
+
+
+/*
+相性占い機能について
+19950215
+みたいに8桁にして入力してください。
+*/
+
 class ViewController: UIViewController {
     
     @IBOutlet weak var panel: UILabel!
@@ -22,16 +30,18 @@ class ViewController: UIViewController {
     
     var nums :[Double] = [0.0,0.0,0.0]
     
-    var ops = [" ", "+", "-", "*", "÷"]
+    var ops = [" ", "+", "-", "*", "÷", "♥"]
     
     var op = 0
 
     func inputnum(tmpnum: Int){
-        if(mode == 0){
-            nums[tab] = nums[tab]*10.0 + Double(tmpnum)
-        }else{
-            mode = mode/10
-            nums[tab] = nums[tab] + mode * Double(tmpnum)
+        if(tab < 2){//左の数字にしか入力許可しない
+            if(mode == 0){
+                nums[tab] = nums[tab]*10.0 + Double(tmpnum)
+            }else{
+                mode = mode/10
+                nums[tab] = nums[tab] + mode * Double(tmpnum)
+            }
         }
         update()
     }
@@ -48,6 +58,19 @@ class ViewController: UIViewController {
         return tmpString
     }
     
+    func uranai(var num1: Double, var num2: Double) -> Double{
+        var tmpDouble = (num1/10000-1900)/(num2/10000-1900)
+        if tmpDouble > 1 {//0〜1にする
+            tmpDouble = 1.0/tmpDouble
+        }
+        
+        var dist = abs(num1%10-num2%10) + abs((num1/10)%10 - (num2/10)%10) + abs((num1/100)%10 - (num2/100)%10) + abs((num1/1000)%10 - (num2/1000)%10)
+        
+        tmpDouble = (20.0-dist)/20 * tmpDouble
+        
+        return tmpDouble
+    }
+    
     func update(){
         //ラベルのupdate
         var tmpInt:Int = 0
@@ -55,8 +78,11 @@ class ViewController: UIViewController {
         if nums[NUM0] != 0 {
             tmpString = double2string(nums[NUM0])
         }
+        if mode==1 {
+            tmpString = tmpString + "."
+        }
         tmpString = tmpString + "\(ops[op])"
-        if(tab>0){
+        if tab>0 {
             tmpString = tmpString + double2string(nums[NUM1])
             if(tab>1){
                 tmpString = tmpString + "=" + double2string(nums[NUM_ANSWER])
@@ -66,7 +92,7 @@ class ViewController: UIViewController {
         return
     }
     func updateOp(operand: Int){
-        if(tab < 2){
+        if tab < 2{
             tab = 1
             op = operand
             mode = 0
@@ -102,6 +128,10 @@ class ViewController: UIViewController {
         updateOp(4)
         update()
     }
+    @IBAction func buUranai(sender: AnyObject) {
+        updateOp(5)
+        update()
+    }
     @IBAction func enter(sender: AnyObject) {
         if(tab==1){
         switch(op){
@@ -117,7 +147,8 @@ class ViewController: UIViewController {
             case 4:
                 nums[NUM_ANSWER] = nums[NUM0] / nums[NUM1]
                 break
-            
+            case 5:
+                nums[NUM_ANSWER] = uranai(nums[NUM0], num2: nums[NUM1])
             default:
                 break
             }
@@ -134,10 +165,13 @@ class ViewController: UIViewController {
         update()
     }
     
-    @IBAction func clear(sender: AnyObject) {
+    @IBAction func clear(sender: AnyObject) {//back
         if(nums[tab]==0){
             if tab > 0 {
                 tab = tab-1
+            }
+            if tab==0 {
+                op = 0
             }
         }else{
             nums[tab] = 0
@@ -162,6 +196,7 @@ class ViewController: UIViewController {
         op = 0
         update()
     }
+    
 
     
     

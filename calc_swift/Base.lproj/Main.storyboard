@@ -243,6 +243,16 @@
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b9H-PM-fJr">
+                                <rect key="frame" x="137" y="28" width="60" height="30"/>
+                                <state key="normal" title="相性占い">
+                                    <color key="titleColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="buUranai:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H6n-KU-VEJ"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.086274512112140656" green="0.015686275437474251" blue="0.015686275437474251" alpha="1" colorSpace="deviceRGB"/>
                     </view>
